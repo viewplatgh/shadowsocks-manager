@@ -23,14 +23,6 @@ exports.signup = (req, res) => {
     }
     return Promise.reject('invalid body');
   }).then(success => {
-    // The first user will be admin
-    return knex('user').count('id AS count').then(success => {
-      if(!success[0].count) {
-        type = 'admin';
-      }
-      return;
-    });
-  }).then(success => {
     const email = req.body.email.toString().toLowerCase();
     const password = req.body.password;
     return user.add({

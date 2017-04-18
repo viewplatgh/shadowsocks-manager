@@ -1,5 +1,8 @@
 'use strict';
 
+const log4js = require('log4js');
+const logger = log4js.getLogger('system');
+
 const knex = appRequire('init/knex').knex;
 const crypto = require('crypto');
 
@@ -172,6 +175,28 @@ const getUserAndPaging = async (opt = {}) => {
   };
 };
 
+const createDefaultAdmin = async () => {
+  let count = knex('user').select().where({ type: 'admin' });
+  if (count > 0) {
+    return;
+  }
+
+  let name = `admin${md5((new Date().toString())).slice(0, 3)}@ssmgr.com`;
+  let password = md5((new Date().toString())).slice(3, 8);
+  addUser({
+    username: name,
+    password,
+    type: 'admin'
+  }).then(success => {
+    const msg = `Created default admin: ${name}, password ${password}`;
+    logger.info(msg);
+    console.log(msg);
+  }).catch(err => {
+    logger.error('Failed to create default admin');
+    throw err;
+  });
+};
+
 exports.add = addUser;
 exports.edit = editUser;
 exports.checkPassword = checkPassword;
@@ -180,3 +205,4 @@ exports.getRecentSignUp = getRecentSignUpUsers;
 exports.getRecentLogin = getRecentLoginUsers;
 exports.getOne = getOneUser;
 exports.getUserAndPaging = getUserAndPaging;
+exports.createDefaultAdmin = createDefaultAdmin;

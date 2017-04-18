@@ -34,6 +34,11 @@ const loadPlugins = () => {
       Promise.all(promises).then(() => {
         logger.info(`Load plugin index: ${ name }/index`);
         appRequire(`plugins/${ name }/index`);
+
+        if (name === 'user') {
+          const user = appRequire('plugins/user/index');
+          user.createDefaultAdmin();
+        }
       }).catch(err => {
         logger.error(err);
       });

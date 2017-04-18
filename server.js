@@ -3,11 +3,11 @@ if(process.env.NODE_ENV !== 'production') {
   require('babel-core/register');
 }
 
-const Raven = require('raven');
-Raven.config('https://f54e0eb3c0ab425ab48fe67399eed90a:bc587e24e3134e528a00d52544bb481d@sentry.io/146443').install();
-Raven.captureMessage('System start.', {
-  level: 'info',
-});
+// const Raven = require('raven');
+// Raven.config('https://f54e0eb3c0ab425ab48fe67399eed90a:bc587e24e3134e528a00d52544bb481d@sentry.io/146443').install();
+// Raven.captureMessage('System start.', {
+//   level: 'info',
+// });
 
 require('./init/log');
 
