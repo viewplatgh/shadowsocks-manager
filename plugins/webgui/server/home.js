@@ -78,7 +78,6 @@ exports.signup = (req, res) => {
 exports.login = (req, res) => {
   delete req.session.user;
   delete req.session.type;
-  req.checkBody('email', 'Invalid email').isEmail();
   req.checkBody('password', 'Invalid password').notEmpty();
   req.getValidationResult().then(result => {
     if(result.isEmpty()) {

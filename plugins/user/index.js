@@ -182,7 +182,7 @@ const createDefaultAdmin = async () => {
     return;
   }
 
-  let name = `admin${md5((new Date().toString())).slice(0, 3)}@ssmgr.com`;
+  let name = `admin${md5((new Date().toString())).slice(0, 3)}`;
   let password = md5((new Date().toString())).slice(3, 8);
   addUser({
     username: name,
