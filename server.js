@@ -18,12 +18,12 @@ logger.info('System start.');
 
 process.on('unhandledRejection', (reason, p) => {
   logger.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
-  Raven.captureException(reason);
+  // Raven.captureException(reason);
 });
 
 process.on('uncaughtException', (err) => {
   logger.error(`Caught exception: ${err}`);
-  Raven.captureException(err);
+  // Raven.captureException(err);
 });
 
 require('./init/utils');
