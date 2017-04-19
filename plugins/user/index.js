@@ -177,6 +177,7 @@ const getUserAndPaging = async (opt = {}) => {
 
 const createDefaultAdmin = async () => {
   let count = knex('user').select().where({ type: 'admin' });
+  count = await count.count('id as count').then(success => success[0].count);
   if (count > 0) {
     return;
   }
