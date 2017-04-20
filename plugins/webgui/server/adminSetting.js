@@ -8,13 +8,13 @@ knex('webguiSetting').select().where({
   }
   const value = {
     accountForNewUser: {
-      isEnable: true,
+      isEnable: false,
       flow: 350,
       type: 5,
       limit: 8,
     },
     signUp: {
-      isEnable: true,
+      isEnable: false,
     },
   };
   return knex('webguiSetting').insert({
