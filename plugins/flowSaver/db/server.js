@@ -31,16 +31,20 @@ const createTable = async () => {
       host,
       port,
       password,
-    }).catch(() => {
-      logger.error(`connect to server ${ password }@${ host }:${ port } fail.`);
-      process.exit(1);
+    }).catch((e) => {
+      const errmsg = `Failed to connect to server ${host}:${port}, is type m manager.address matching type s manager.address?`;
+      logger.error(errmsg);
+      throw e;
     });
+    logger.info(`Connected to server ${host}:${port} successfully`);
     await knex('server').insert({
       name: 'default',
       host,
       port,
       password,
     });
+  } else {
+    logger.info(`Existing server found: ${list[0].host}:${list[0].port}`);
   }
   return;
 };
