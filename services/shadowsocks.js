@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const log4js = require('log4js');
 const logger = log4js.getLogger('system');
 
@@ -125,10 +126,6 @@ const compareWithLastFlow = (flow, lastFlow) => {
 
 connect();
 startUp();
-setInterval(() => {
-  resend();
-  sendPing();
-}, 60 * 1000);
 
 const checkPortRange = (port) => {
   if(!config.shadowsocks.portRange) { return true; }
@@ -237,8 +234,16 @@ const getFlow = async (options) => {
   }
 };
 
+const handleInterval = () => {
+  _.throttle(() => {
+    resend();
+    sendPing();
+  }, 60 * 1000);
+};
+
 exports.addAccount = addAccount;
 exports.removeAccount = removeAccount;
 exports.changePassword = changePassword;
 exports.listAccount = listAccount;
 exports.getFlow = getFlow;
+exports.handleInterval = handleInterval;

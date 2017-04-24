@@ -39,6 +39,8 @@ initDb().then(() => {
 }).then(() => {
   require('./init/loadServices');
   require('./init/loadPlugins');
+}).then(() => {
+  require('./init/heartbeat');
 }).catch(err => {
   logger.error(err);
 });

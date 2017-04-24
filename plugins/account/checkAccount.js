@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const log4js = require('log4js');
 const logger = log4js.getLogger('account');
 const knex = appRequire('init/knex').knex;
@@ -18,10 +19,6 @@ const sendMessage = () => {
   });
   messages = [];
 };
-
-setInterval(() => {
-  sendMessage();
-}, 10 * 1000);
 
 const addPort = (data, server) => {
   messages.push([{
@@ -159,16 +156,19 @@ const checkServer = async () => {
   Promise.all(promises);
 };
 
+const handleInterval = () => {
+  _.throttle(sendMessage, 10 * 1000);
+  _.throttle(checkServer, 60 * 1000);
+};
+
 exports.checkServer = checkServer;
 exports.sendMessage = sendMessage;
 exports.addPort = addPort;
 exports.delPort = delPort;
 exports.changePassword = changePassword;
+exports.handleInterval = handleInterval;
 
 setTimeout(() => {
   // TODO: fix load plugins
   checkServer();
 }, 10 * 1000);
-setInterval(() => {
-  checkServer();
-}, 60 * 1000);
