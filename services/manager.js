@@ -64,8 +64,8 @@ const sendMessage = (data, options) => {
         } else if(message.code === 0) {
           resolve(message.data);
         } else {
+          logger.error('ssmgr[s] returned an error');
           logger.error(message);
-          reject(new Error('ssmgr[s] return an error code'));
         }
         client.end();
       }).catch(err => {
