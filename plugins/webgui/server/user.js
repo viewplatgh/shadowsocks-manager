@@ -87,7 +87,7 @@ exports.getServerPortFlow = (req, res) => {
   const serverId = +req.params.serverId;
   const port = +req.params.port;
   let account = null;
-  knex('account_plugin').select().where({
+  knex('account').select().where({
     port,
   }).then(success => {
     if(!success.length) {

@@ -11,7 +11,7 @@ const addAccount = async (type, options) => {
     type = 3;
   }
   if(type === 1) {
-    await knex('account_plugin').insert({
+    await knex('account').insert({
       type,
       userId: options.user,
       port: options.port,
@@ -22,7 +22,7 @@ const addAccount = async (type, options) => {
     await checkAccount.checkServer();
     return;
   } else if (type >= 2 && type <= 5) {
-    await knex('account_plugin').insert({
+    await knex('account').insert({
       type,
       userId: options.user,
       port: options.port,
@@ -41,41 +41,41 @@ const addAccount = async (type, options) => {
 };
 
 const changePort = async (id, port) => {
-  const result = await knex('account_plugin').update({ port }).where({ id });
+  const result = await knex('account').update({ port }).where({ id });
   await checkAccount.checkServer();
 };
 
 const getAccount = async (options = {}) => {
   const where = {};
   if(options.id) {
-    where['account_plugin.id'] = options.id;
+    where['account.id'] = options.id;
   }
   if(options.userId) {
     where['user.id'] = options.userId;
   }
   if(options.port) {
-    where['account_plugin.port'] = options.port;
+    where['account.port'] = options.port;
   }
-  const account = await knex('account_plugin').select([
-    'account_plugin.id',
-    'account_plugin.type',
-    'account_plugin.userId',
-    'account_plugin.server',
-    'account_plugin.port',
-    'account_plugin.password',
-    'account_plugin.data',
-    'account_plugin.status',
-    'account_plugin.autoRemove',
+  const account = await knex('account').select([
+    'account.id',
+    'account.type',
+    'account.userId',
+    'account.server',
+    'account.port',
+    'account.password',
+    'account.data',
+    'account.status',
+    'account.autoRemove',
     'user.id as userId',
     'user.email as user',
   ])
-  .leftJoin('user', 'user.id', 'account_plugin.userId')
+  .leftJoin('user', 'user.id', 'account.userId')
   .where(where);
   return account;
 };
 
 const delAccount = async (id) => {
-  const result = await knex('account_plugin').delete().where({ id });
+  const result = await knex('account').delete().where({ id });
   if(!result) {
     return Promise.reject('Account id[' + id + '] not found');
   }
@@ -84,7 +84,7 @@ const delAccount = async (id) => {
 };
 
 const editAccount = async (id, options) => {
-  const account = await knex('account_plugin').select().where({ id }).then(success => {
+  const account = await knex('account').select().where({ id }).then(success => {
     if(success.length) {
       return success[0];
     }
@@ -105,18 +105,18 @@ const editAccount = async (id, options) => {
     });
     update.port = +options.port;
   }
-  await knex('account_plugin').update(update).where({ id });
+  await knex('account').update(update).where({ id });
   return;
 };
 
 const changePassword = async (id, password) => {
-  const account = await knex('account_plugin').select().where({ id }).then(success => {
+  const account = await knex('account').select().where({ id }).then(success => {
     if(success.length) {
       return success[0];
     }
     return Promise.reject('account not found');
   });
-  await knex('account_plugin').update({
+  await knex('account').update({
     password,
   }).where({ id });
   await checkAccount.changePassword(id, password);
@@ -124,7 +124,7 @@ const changePassword = async (id, password) => {
 };
 
 const addAccountLimit = async (id, number = 1) => {
-  const account = await knex('account_plugin').select().where({ id }).then(success => {
+  const account = await knex('account').select().where({ id }).then(success => {
     if(success.length) {
       return success[0];
     }
@@ -144,7 +144,7 @@ const addAccountLimit = async (id, number = 1) => {
   } else {
     accountData.limit += number;
   }
-  await knex('account_plugin').update({
+  await knex('account').update({
     data: JSON.stringify(accountData),
   }).where({ id });
   return;
@@ -152,7 +152,7 @@ const addAccountLimit = async (id, number = 1) => {
 
 const addAccountLimitToMonth = async (userId, accountId, number = 1) => {
   if(!accountId) {
-    const port = await knex('account_plugin').select()
+    const port = await knex('account').select()
     .orderBy('port', 'DESC').limit(1)
     .then(success => {
       if(success.length) {
@@ -172,7 +172,7 @@ const addAccountLimitToMonth = async (userId, accountId, number = 1) => {
     });
     return;
   }
-  const account = await knex('account_plugin').select().where({ id: accountId }).then(success => {
+  const account = await knex('account').select().where({ id: accountId }).then(success => {
     if(success.length) {
       return success[0];
     }
@@ -208,7 +208,7 @@ const addAccountLimitToMonth = async (userId, accountId, number = 1) => {
       accountData.create -= 30 * 86400 * 1000;
     }
   }
-  await knex('account_plugin').update({
+  await knex('account').update({
     type: 3,
     data: JSON.stringify(accountData),
     autoRemove: 0,
@@ -228,7 +228,7 @@ const setAccountLimit = async (userId, accountId, orderType) => {
     flow[payType[p]] = config.plugins.account.pay[p].flow;
   };
   if(!accountId) {
-    const port = await knex('account_plugin').select()
+    const port = await knex('account').select()
     .orderBy('port', 'DESC').limit(1)
     .then(success => {
       if(success.length) {
@@ -248,7 +248,7 @@ const setAccountLimit = async (userId, accountId, orderType) => {
     });
     return;
   }
-  const account = await knex('account_plugin').select().where({ id: accountId }).then(success => {
+  const account = await knex('account').select().where({ id: accountId }).then(success => {
     if(success.length) {
       return success[0];
     }
@@ -279,7 +279,7 @@ const setAccountLimit = async (userId, accountId, orderType) => {
     accountData.limit += 1;
     accountData.create -= countTime;
   }
-  await knex('account_plugin').update({
+  await knex('account').update({
     type: orderType >= 6 ? 3 : orderType,
     data: JSON.stringify(accountData),
     autoRemove: 0,

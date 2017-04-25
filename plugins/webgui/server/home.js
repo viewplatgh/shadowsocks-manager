@@ -44,7 +44,7 @@ exports.signup = (req, res) => {
         if(!success.accountForNewUser.isEnable) {
           return;
         }
-        return knex('account_plugin').select().orderBy('port', 'DESC').limit(1)
+        return knex('account').select().orderBy('port', 'DESC').limit(1)
         .then(success => {
           if(success.length) {
             port = success[0].port + 1;

@@ -10,9 +10,20 @@ const createTable = async() => {
   if(exist) {
     return;
   }
+
   return knex.schema.createTableIfNotExists(tableName, function(table) {
-    table.integer('port').primary();
+    table.increments('id').primary();
+    table.integer('type');  // 2: 7 days, 3: 30 days, 4: 1 day, 5: 1 hour, other: no limits
+    table.integer('userId').foreign();
+    table.string('server');
+    table.integer('port');
     table.string('password');
+    table.string('data');
+    table.dateTime('createdTime');
+    table.integer('flow');
+    table.integer('limit');
+    table.integer('status');
+    table.integer('autoRemove').defaultTo(0);
   });
 };
 

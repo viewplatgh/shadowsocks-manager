@@ -45,7 +45,7 @@ const delPort = (data, server) => {
 
 const changePassword = async (id, password) => {
   const server = await serverManager.list();
-  const account = await knex('account_plugin').select();
+  const account = await knex('account').select();
   const port = account.filter(f => f.id === id)[0].port;
   if(!port) { return Promise.reject('account id not exists'); }
   server.forEach(s => {
@@ -73,7 +73,7 @@ const checkFlow = async (server, port, startTime, endTime) => {
 };
 
 const checkServer = async () => {
-  const account = await knex('account_plugin').select();
+  const account = await knex('account').select();
   account.forEach(a => {
     if(a.type >= 2 && a.type <= 5) {
       let timePeriod = 0;
@@ -88,7 +88,7 @@ const checkServer = async () => {
       }
       if(data.create + data.limit * timePeriod <= Date.now() || data.create >= Date.now()) {
         if(a.autoRemove) {
-          knex('account_plugin').delete().where({ id: a.id }).then();
+          knex('account').delete().where({ id: a.id }).then();
         }
       }
     }
@@ -118,7 +118,7 @@ const checkServer = async () => {
             if(a.type === 5) { timePeriod = 3600 * 1000; }
             const data = JSON.parse(a.data);
             let startTime = data.create;
-            while(startTime + timePeriod <= Date.now()) {
+            if (startTime + timePeriod <= Date.now()) {
               startTime += timePeriod;
             }
             const flow = await checkFlow(s.id, a.port, startTime, Date.now());

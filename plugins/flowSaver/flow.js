@@ -338,8 +338,8 @@ const getServerUserFlow = (serverId, timeArray) => {
     'user.userName',
   ])
   .groupBy('saveFlow.port')
-  .leftJoin('account_plugin', 'account_plugin.port', 'saveFlow.port')
-  .leftJoin('user', 'account_plugin.userId', 'user.id')
+  .leftJoin('account', 'account.port', 'saveFlow.port')
+  .leftJoin('user', 'account.userId', 'user.id')
   .where({
     'saveFlow.id': +serverId,
   }).whereBetween('saveFlow.time', timeArray);
@@ -351,8 +351,8 @@ const getAccountServerFlow = (accountId, timeArray) => {
     'server.name',
   ])
   .leftJoin('server', 'server.id', 'saveFlow.id')
-  .leftJoin('account_plugin', 'account_plugin.port', 'saveFlow.port')
-  .where({ 'account_plugin.id': accountId })
+  .leftJoin('account', 'account.port', 'saveFlow.port')
+  .where({ 'account.id': accountId })
   .whereBetween('saveFlow.time', timeArray);
   ;
 };

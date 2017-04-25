@@ -96,7 +96,7 @@ const orderList = async (options = {}) => {
     'alipay.orderId',
     'alipay.orderType',
     'user.username',
-    'account_plugin.port',
+    'account.port',
     'alipay.amount',
     'alipay.status',
     'alipay.alipayData',
@@ -104,7 +104,7 @@ const orderList = async (options = {}) => {
     'alipay.expireTime',
   ])
   .leftJoin('user', 'user.id', 'alipay.user')
-  .leftJoin('account_plugin', 'account_plugin.id', 'alipay.account')
+  .leftJoin('account', 'account.id', 'alipay.account')
   .where(where)
   .orderBy('alipay.createTime', 'DESC');
   orders.forEach(f => {
@@ -125,7 +125,7 @@ const orderListAndPaging = async (options = {}) => {
     'alipay.orderId',
     'alipay.orderType',
     'user.username',
-    'account_plugin.port',
+    'account.port',
     'alipay.amount',
     'alipay.status',
     'alipay.alipayData',
@@ -133,7 +133,7 @@ const orderListAndPaging = async (options = {}) => {
     'alipay.expireTime',
   ])
   .leftJoin('user', 'user.id', 'alipay.user')
-  .leftJoin('account_plugin', 'account_plugin.id', 'alipay.account');
+  .leftJoin('account', 'account.id', 'alipay.account');
 
   if(filter.length) {
     count = count.whereIn('alipay.status', filter);
