@@ -16,17 +16,17 @@ switch (config.type) {
     shadowsocksServices = appRequire('services/shadowsocks');
     break;
   case 'm':
-    if (config.plugins['account'].use) {
+    if (config.plugins['account'] && config.plugins['account'].use) {
       checkAccount = appRequire('plugins/account/checkAccount');
     }
-    if (config.plugins['freeAccount'].use) {
+    if (config.plugins['freeAccount'] && config.plugins['freeAccount'].use) {
       checkFreeAccount = appRequire('plugins/freeAccount/server/account');
     }
-    if (config.plugins['flowSaver'].use) {
+    if (config.plugins['flowSaver'] && config.plugins['flowSaver'].use) {
       saveFlow = appRequire('plugins/flowSaver');
       generateFlow = appRequire('plugins/flowSaver/generateFlow');
     }
-    if (config.plugins['alipay'].use) {
+    if (config.plugins['alipay'] && config.plugins['alipay'].use) {
       alipay = appRequire('plugins/alipay');
     }
     break;
