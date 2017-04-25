@@ -56,9 +56,9 @@ const beatForever = () => {
   const timeDelta = nowTime - startTime;
   const times = Math.floor(timeDelta / 5000);
   const daysD = Math.floor(timeDelta / (1000 * 60 * 60 * 24));
-  const hoursD = Math.floor(timeDelta / (1000 * 60 * 60));
-  const minsD = Math.floor(timeDelta / (1000 * 60));
-  const secsD = Math.floor(timeDelta / 1000);
+  const hoursD = Math.floor((timeDelta  - daysD * 1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+  const minsD = Math.floor((timeDelta - Math.floor(timeDelta / (1000 * 60 * 60)) * 1000 * 60 * 60) / (1000 * 60));
+  const secsD = Math.floor((timeDelta - Math.floor(timeDelta / (1000* 60)) * 1000 * 60) / 1000);
 
   logger.info(
     `Heartbeating ${times} times, system is running OK for ${daysD} days ${hoursD} hours ${minsD} minutes ${secsD} seconds`
