@@ -192,8 +192,10 @@ const checkAccount = async () => {
   }
 };
 
+let throttleCheckAccount = _.throttle(checkAccount, 60 * 1000);
+
 const handleInterval = () => {
-  _.throttle(checkAccount, 60 * 1000);
+  throttleCheckAccount();  
 };
 
 exports.createAccount = createAccount;

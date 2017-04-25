@@ -60,8 +60,10 @@ const saveFlow = async () => {
   }
 };
 
+let throttleSaveFlow =  _.throttle(saveFlow, sched0);
+
 const handleInterval = () => {
-  _.throttle(saveFlow, sched0);
+  throttleSaveFlow();
 };
 
 exports.handleInterval = handleInterval;

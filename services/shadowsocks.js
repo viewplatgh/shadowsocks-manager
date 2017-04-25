@@ -234,11 +234,13 @@ const getFlow = async (options) => {
   }
 };
 
-const handleInterval = () => {
-  _.throttle(() => {
+let throttleSend = _.throttle(() => {
     resend();
     sendPing();
   }, 60 * 1000);
+
+const handleInterval = () => {
+  throttleSend();
 };
 
 exports.addAccount = addAccount;

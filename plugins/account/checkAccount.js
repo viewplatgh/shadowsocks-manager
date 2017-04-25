@@ -156,9 +156,12 @@ const checkServer = async () => {
   Promise.all(promises);
 };
 
+let throttleSendMessage = _.throttle(sendMessage, 10 * 1000);
+let throttleCheckServer = _.throttle(checkServer, 60 * 1000);
+
 const handleInterval = () => {
-  _.throttle(sendMessage, 10 * 1000);
-  _.throttle(checkServer, 60 * 1000);
+  throttleSendMessage();
+  throttleCheckServer();  
 };
 
 exports.checkServer = checkServer;

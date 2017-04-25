@@ -64,16 +64,18 @@ const generateFlow = async (type) => {
 // knex('saveFlowDay').delete().whereBetween('time', [0, Date.now() - 45 * 24 * 3600 * 1000]).then();
 // knex('saveFlowHour').delete().whereBetween('time', [0, Date.now() - 45 * 24 * 3600 * 1000]).then();
 // knex('saveFlow5min').delete().whereBetween('time', [0, Date.now() - 45 * 24 * 3600 * 1000]).then();
-
-const handleInterval = () => {
-  _.throttle(() => {
+let throttle0 =  _.throttle(() => {
     generateFlow('day');
     generateFlow('hour');
   }, 30 * 60 * 1000);
 
-  _.throttle(() => {
+let throttle1 = _.throttle(() => {
     generateFlow('5min');
   }, 5 * 60 * 1000);
+
+const handleInterval = () => {
+  throttle0();
+  throttle1();
 };
 
 exports.handleInterval = handleInterval;

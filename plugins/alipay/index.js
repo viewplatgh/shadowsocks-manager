@@ -194,8 +194,9 @@ const loopAlipay = async () => {
   });
 };
 
+let throttleLoopAlipay = _.throttle(loopAlipay, 60 * 1000);
 const handleInterval = () => {
-  _.throttle(loopAlipay, 60 * 1000);
+  throttleLoopAlipay();
 };
 
 exports.orderListAndPaging = orderListAndPaging;
