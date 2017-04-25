@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const log4js = require('log4js');
 const logger = log4js.getLogger('freeAccount');
 
@@ -191,9 +192,10 @@ const checkAccount = async () => {
   }
 };
 
-checkAccount();
-setInterval(() => {
-  checkAccount();
-}, 60 * 1000);
+const handleInterval = () => {
+  _.throttle(checkAccount, 60 * 1000);
+};
 
 exports.createAccount = createAccount;
+exports.handleInterval = handleInterval;
+

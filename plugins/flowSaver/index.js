@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const log4js = require('log4js');
 const logger = log4js.getLogger('flowSaver');
 const path = require('path');
@@ -59,7 +60,8 @@ const saveFlow = async () => {
   }
 };
 
-saveFlow();
-const timer0 = later.setInterval(() => {
-  saveFlow();
-}, sched0);
+const handleInterval = () => {
+  _.throttle(saveFlow, sched0);
+};
+
+exports.handleInterval = handleInterval;

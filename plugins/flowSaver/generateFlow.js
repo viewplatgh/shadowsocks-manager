@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const knex = appRequire('init/knex').knex;
 const moment = require('moment');
 
@@ -64,13 +65,15 @@ const generateFlow = async (type) => {
 // knex('saveFlowHour').delete().whereBetween('time', [0, Date.now() - 45 * 24 * 3600 * 1000]).then();
 // knex('saveFlow5min').delete().whereBetween('time', [0, Date.now() - 45 * 24 * 3600 * 1000]).then();
 
-generateFlow('day');
-generateFlow('hour');
-generateFlow('5min');
-setInterval(() => {
-  generateFlow('day');
-  generateFlow('hour');
-}, 30 * 60 * 1000);
-setInterval(() => {
-  generateFlow('5min');
-}, 5 * 60 * 1000);
+const handleInterval = () => {
+  _.throttle(() => {
+    generateFlow('day');
+    generateFlow('hour');
+  }, 30 * 60 * 1000);
+
+  _.throttle(() => {
+    generateFlow('5min');
+  }, 5 * 60 * 1000);
+};
+
+exports.handleInterval = handleInterval;
