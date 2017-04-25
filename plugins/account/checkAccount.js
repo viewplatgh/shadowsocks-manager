@@ -168,7 +168,3 @@ exports.delPort = delPort;
 exports.changePassword = changePassword;
 exports.handleInterval = handleInterval;
 
-setTimeout(() => {
-  // TODO: fix load plugins
-  checkServer();
-}, 10 * 1000);
