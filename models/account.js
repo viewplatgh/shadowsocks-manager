@@ -14,7 +14,7 @@ const createTable = async() => {
   return knex.schema.createTableIfNotExists(tableName, function(table) {
     table.increments('id').primary();
     table.integer('type');  // 2: 7 days, 3: 30 days, 4: 1 day, 5: 1 hour, other: no limits
-    table.integer('userId').foreign();
+    table.integer('userId');
     table.string('server');
     table.integer('port');
     table.string('password');
