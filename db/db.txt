@@ -8,9 +8,53 @@ table name: user
  password        varchar(255)      NO         NULL                    
  telegram        varchar(255)      NO                                 
  type            varchar(255)      NO                                 
- verifytoken     varchar(255)      NO         NULL                    
+ verifyToken     varchar(255)      NO         NULL                    
  verified        tinyint(1)        NO         0                       
  remember_token  varchar(100)      YES        NULL                    
  created_at      timestamp         YES        NULL                    
  updated_at      timestamp         YES        NULL                    
 +----------------+------------------+------+-----+---------+----------------+
+
+table name:plans
++------------+------------------+------+-----+---------+----------------+
+| Field      | Type             | Null | Key | Default | Extra          |
++------------+------------------+------+-----+---------+----------------+
+| id         | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(255)     | NO   |     | NULL    |                |
+| speedLimit | int(11)          | NO   |     | 0       |                |
+| dataLimit  | int(11)          | NO   |     | 0       |                |
+| length     | int(11)          | NO   |     | 365     |                |
+| disabled   | tinyint(1)       | NO   |     | 0       |                |
+| price      | int(11)          | NO   |     | 0       |                |
+| created_at | timestamp        | YES  |     | NULL    |                |
+| updated_at | timestamp        | YES  |     | NULL    |                |
++------------+------------------+------+-----+---------+----------------+
+
+table name:servers
++----------------+------------------+------+-----+---------+----------------+
+| Field          | Type             | Null | Key | Default | Extra          |
++----------------+------------------+------+-----+---------+----------------+
+| id             | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name           | varchar(255)     | NO   |     | NULL    |                |
+| ip             | varchar(255)     | NO   |     | NULL    |                |
+| managementPort | int(11)          | NO   |     | 6001    |                |
+| portRange      | varchar(255)     | NO   |     | NULL    |                |
+| created_at     | timestamp        | YES  |     | NULL    |                |
+| updated_at     | timestamp        | YES  |     | NULL    |                |
++----------------+------------------+------+-----+---------+----------------+
+
+table name:subscriptions
++------------+------------------+------+-----+---------+-------+
+| Field      | Type             | Null | Key | Default | Extra |
++------------+------------------+------+-----+---------+-------+
+| userid     | int(10) unsigned | NO   | MUL | NULL    |       |
+| planid     | int(10) unsigned | NO   | MUL | NULL    |       |
+| serverid   | int(10) unsigned | NO   | PRI | NULL    |       |
+| port       | int(11)          | NO   |     | NULL    |       |
+| start      | date             | NO   |     | NULL    |       |
+| end        | date             | NO   |     | NULL    |       |
+| created_at | timestamp        | YES  |     | NULL    |       |
+| updated_at | timestamp        | YES  |     | NULL    |       |
++------------+------------------+------+-----+---------+-------+
+
+
